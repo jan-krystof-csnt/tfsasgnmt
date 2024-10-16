@@ -19,19 +19,6 @@ resource "openstack_networking_port_v2" "node_port" {
   security_group_ids = [ data.openstack_networking_secgroup_v2.security_group_ssh.secgroup_id]
   fixed_ip {
     subnet_id = openstack_networking_subnet_v2.subnet.id
-    ip_address = cidrhost(var.internal_network_cidr, 4 + count.index)
+    ip_address = cidrhost(var.internal_network_cidr, var.ip_address_start + count.index)
   }
-}
-
-# TODO: delme
-resource "openstack_networking_floatingip_v2" "bastion_fip" {
-  count = var.instance_count
-  pool  = "external-ipv4-general-public"
-}
-
-# TODO: delme
-resource "openstack_networking_floatingip_associate_v2" "bastion_fip_associate" {
-  count      = var.instance_count
-  floating_ip = openstack_networking_floatingip_v2.bastion_fip[count.index].address
-  port_id    = openstack_networking_port_v2.node_port[count.index].id
 }

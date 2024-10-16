@@ -18,12 +18,12 @@ variable "image_name" {
 
 variable "root_disk_size" {
   type = number
-  default = 30
+  default = 60
 }
 
 variable "logs_disk_size" {
   type = number
-  default = 30
+  default = 10
 }
 
 variable "data_disk_size" { 
@@ -33,12 +33,12 @@ variable "data_disk_size" {
 
 variable "internal_network_cidr" {
   type = string
-  default = "10.0.0.0/24"
+  default = "10.0.4.0/24"
 }
 
-variable "preferred_ip_address" {
+variable "ip_address_start" {
   type = string
-  default = "10.0.0.4"
+  default = "4"
 }
 
 variable "router_id" {
@@ -55,5 +55,5 @@ variable "security_group_ssh_id" {
 
 variable "default_ssh_user" {
   type = string
-  default = "ubuntu"
+  default = "thermo"
 }

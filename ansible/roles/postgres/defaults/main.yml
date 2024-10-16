@@ -1,0 +1,7 @@
+---
+docker_pg_image: postgres:latest
+pg_container_name: my_postgres
+db_name: mydb
+db_user: foo
+db_password: bar
+pg_volume_name: pgdata

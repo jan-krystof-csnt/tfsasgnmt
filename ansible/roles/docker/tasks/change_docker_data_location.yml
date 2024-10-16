@@ -1,0 +1,24 @@
+---
+# Change docker data location so there will not be any risk of running root volume out of space
+- name: Stop Docker service
+  service:
+    name: docker
+    state: stopped
+    
+- name: Move existing Docker data to /data if necessary
+  command: mv /var/lib/docker /data/
+  args:
+    creates: /data/docker
+
+- name: Configure Docker to use /data directory
+  lineinfile:
+    path: /etc/docker/daemon.json
+    line: '{ "data-root": "/data/docker" }'
+    create: yes
+  notify:
+    - restart-docker
+
+- name: Start Docker service
+  service:
+    name: docker
+    state: started

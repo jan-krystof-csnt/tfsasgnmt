@@ -2,7 +2,7 @@ data "external" "ssh_public_key" {
   program = [
     "bash",
     "-c",
-    "echo '{ \"ssh_key\": \"'$(yq eval '.ssh_public' ${path.root}../ansible/credentials/ssh_key_infrastructure.yml)'\" }'"
+    "echo '{ \"ssh_key\": \"'$(yq eval '.ssh_public' ../ansible/credentials/ssh_key_infrastructure.yml)'\" }'"
   ]
 }
 
@@ -11,7 +11,7 @@ locals {
 }
 
 data "template_file" "cloud_init" {
-  template = file("${path.module}/cloud-init.tpl")
+  template = file("cloud-init.tpl")
 
   vars = {
     ssh_authorized_keys = local.ssh_public_key
