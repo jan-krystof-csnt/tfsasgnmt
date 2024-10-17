@@ -1,0 +1,9 @@
+---
+- name: Update authorized_keys
+  hosts: nodes
+  connection: ssh  
+  become: true
+  roles:
+    - docker
+    - postgres
+    - node_exporter

@@ -1,0 +1,27 @@
+---
+# Set up PostgreSQL Docker container with persistent storage
+
+- name: Create Docker volume
+  docker_volume:
+    name: "{{ pg_volume_name }}"
+    state: present
+
+- name: Pull the latest PostgreSQL Docker image
+  docker_image:
+    name: "{{ docker_pg_image }}"
+    source: pull
+
+- name: Run PostgreSQL container
+  docker_container:
+    name: "{{ pg_container_name }}"
+    image: "{{ docker_pg_image }}"
+    state: started
+    restart_policy: always
+    env:
+      POSTGRES_DB: "{{ db_name }}"
+      POSTGRES_USER: "{{ db_user }}"
+      POSTGRES_PASSWORD: "{{ db_password }}"
+    ports:
+      - "5432:5432"
+    volumes:
+      - "{{ pg_volume_name }}:/var/lib/postgresql/data"
