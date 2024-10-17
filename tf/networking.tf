@@ -22,3 +22,9 @@ resource "openstack_networking_port_v2" "node_port" {
     ip_address = cidrhost(var.internal_network_cidr, var.ip_address_start + count.index)
   }
 }
+
+# keep this output as there is coupling from generate_inventory.sh
+output "node_port_ips" {
+  value = [for port in openstack_networking_port_v2.node_port : port.all_fixed_ips[0]]
+  description = "List of IP addresses of the created ports"
+}

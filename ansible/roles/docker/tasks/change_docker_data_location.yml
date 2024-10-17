@@ -4,6 +4,11 @@
   service:
     name: docker
     state: stopped
+
+- name: Ensure /data exists 
+  file:
+    path: /data
+    state: directory
     
 - name: Move existing Docker data to /data if necessary
   command: mv /var/lib/docker /data/

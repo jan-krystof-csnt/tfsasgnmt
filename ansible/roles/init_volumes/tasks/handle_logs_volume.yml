@@ -2,6 +2,11 @@
   ansible.builtin.systemd:
     name: systemd-journald
     state: stopped
+  register: result
+  retries: 5
+  delay: 10
+  until: result is successful
+  
 
 - name: Create temporary backup of /var/log
   ansible.builtin.archive:

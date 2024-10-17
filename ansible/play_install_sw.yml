@@ -4,7 +4,6 @@
   connection: ssh  
   become: true
   roles:
-#    - init_volumes 
     - docker
     - postgres
     - node_exporter

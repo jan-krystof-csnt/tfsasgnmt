@@ -1,10 +1,13 @@
 ---
 # Install Docker
-- name: Update and upgrade all packages to the latest version
+- name: Update (apt update)
   ansible.builtin.apt:
     update_cache: true
     upgrade: dist
-    cache_valid_time: 3600
+  register: update_output
+  until: update_output is succeeded
+  retries: 5
+  delay: 10
 
 - name: Install required packages
   ansible.builtin.apt:
@@ -14,6 +17,10 @@
       - curl
       - gnupg
       - software-properties-common
+  register: install_output
+  until: install_output is succeeded
+  retries: 5
+  delay: 10
 
 - name: Create directory for Docker's GPG key
   ansible.builtin.file:
@@ -26,10 +33,6 @@
     url: https://download.docker.com/linux/ubuntu/gpg
     keyring: /etc/apt/keyrings/docker.gpg
     state: present
-
-- name: Print architecture variables
-  ansible.builtin.debug:
-    msg: "Architecture: {{ ansible_architecture }}, Codename: {{ ansible_lsb.codename }}"
 
 - name: Add Docker repository
   ansible.builtin.apt_repository:
@@ -57,9 +60,9 @@
     name: docker
     state: present
 
-- name: Add user to Docker group
+- name: Add user {{ the_user }} to Docker group
   ansible.builtin.user:
-    name: "{{ user }}"
+    name: "{{ the_user }}"
     groups: docker
     append: true
 
