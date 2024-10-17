@@ -1,0 +1,32 @@
+.vault_pass
+.idea/
+.tmp/
+.output/
+
+# Terraform files
+*.tfstate.*
+*.tfstate
+*.tfvars.json
+.terraform/
+.terraform.lock.hcl
+*.plan
+*.out
+
+tf/node_port_ips.json
+#tf/tfs-meta-*.tfvars
+
+# Crash log files
+crash.log
+
+# Override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Plan output files
+*.tfplan
+*.plan
+
+# Module directory
+**/.terraform/*

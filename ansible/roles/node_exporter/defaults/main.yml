@@ -1,0 +1,4 @@
+---
+node_exporter_image: prom/node-exporter:latest
+exporter_container_name: node_exporter
+exporter_host_port: 9182

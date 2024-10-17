@@ -1,0 +1,57 @@
+- name: Stop systemd-journald
+  ansible.builtin.systemd:
+    name: systemd-journald
+    state: stopped
+  register: result
+  retries: 5
+  delay: 10
+  until: result is successful
+  
+
+- name: Create temporary backup of /var/log
+  ansible.builtin.archive:
+    path: /var/log/
+    dest: /tmp/var_log_backup.tar.gz
+    exclude_path: /var/log.old/
+
+- name: Format {{ logs_volume }} with ext4 filesystem
+  ansible.builtin.command:
+    cmd: mkfs.ext4 {{ logs_volume }}
+  when: not ansible_check_mode
+
+- name: Move old /var/log to /var/log.old
+  ansible.builtin.command:
+    cmd: mv /var/log /var/log.old
+  when: not ansible_check_mode
+
+- name: Mount {{ logs_volume }} on /var/log
+  ansible.builtin.mount:
+    path: /var/log
+    src: "{{ logs_volume }}"
+    fstype: ext4
+    opts: defaults
+    state: mounted
+
+- name: Extract backup contents to /var/log
+  ansible.builtin.unarchive:
+    src: /tmp/var_log_backup.tar.gz
+    dest: /var/log
+    remote_src: yes
+
+- name: Start systemd-journald
+  ansible.builtin.systemd:
+    name: systemd-journald
+    state: started
+
+- name: Ensure mount persists on reboot in /etc/fstab
+  ansible.posix.mount:
+    path: /var/log
+    src: "{{ logs_volume }}"
+    fstype: ext4
+    opts: defaults
+    state: mounted
+
+- name: Cleanup temporary files
+  ansible.builtin.file:
+    path: /tmp/var_log_backup.tar.gz
+    state: absent

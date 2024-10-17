@@ -1,0 +1,24 @@
+- name: Format {{ data_volume }} if not formatted
+  filesystem:
+    fstype: ext4
+    dev: "{{ data_volume }}"
+
+- name: Create mount point for /data
+  file:
+    path: /data
+    state: directory
+
+- name: Mount {{ data_volume }} to /data
+  mount:
+    path: /data
+    src: "{{ data_volume }}"
+    fstype: ext4
+    state: mounted
+
+- name: Ensure {{ data_volume }} is mounted on reboot
+  mount:
+    path: /data
+    src: "{{ data_volume }}"
+    fstype: ext4
+    opts: defaults
+    state: present

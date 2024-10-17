@@ -1,0 +1,11 @@
+---
+- name: Ensure e2fsprogs is present
+  apt:
+    name: e2fsprogs
+    state: present
+
+- include_tasks: handle_data_volume.yml
+  when: data_volume is defined
+  
+- include_tasks: handle_logs_volume.yml
+  when: logs_volume is defined

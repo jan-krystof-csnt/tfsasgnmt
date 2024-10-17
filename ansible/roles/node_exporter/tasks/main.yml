@@ -1,0 +1,16 @@
+---
+# Set up PostgreSQL Docker container with persistent storage
+
+- name: Pull the latest Prometheus Node Exporter Docker image
+  docker_image:
+    name: "{{ node_exporter_image }}"
+    source: pull
+
+- name: Run Node Exporter container
+  docker_container:
+    name: "{{ exporter_container_name }}"
+    image: "{{ node_exporter_image }}"
+    state: started
+    restart_policy: always
+    ports:
+      - "{{ exporter_host_port }}:9100"  # Map container's default 9100 port to 9182

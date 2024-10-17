@@ -1,0 +1,6 @@
+---
+- name: Restart PostgreSQL container
+  docker_container:
+    name: "{{ pg_container_name }}"
+    state: restarted
+  listen: postgres-restart

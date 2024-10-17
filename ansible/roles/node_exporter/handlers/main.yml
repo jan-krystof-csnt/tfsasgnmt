@@ -1,0 +1,6 @@
+---
+- name: Restart Node Exporter container
+  docker_container:
+    name: "{{ exporter_container_name }}"
+    state: restarted
+  listen: restart-node-exporter

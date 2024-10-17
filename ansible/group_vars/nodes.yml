@@ -1,0 +1,3 @@
+the_user: thermo
+data_volume: /dev/sdb
+logs_volume: /dev/sdc

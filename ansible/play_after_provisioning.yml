@@ -1,0 +1,7 @@
+---
+- name: Update authorized_keys
+  hosts: nodes
+  connection: ssh  
+  become: true
+  roles:
+    - init_volumes 
